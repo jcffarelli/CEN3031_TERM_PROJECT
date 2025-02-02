@@ -1,0 +1,11 @@
+Select a team name.
+
+Assign team roles.
+
+Determine programming languages, frameworks, technologies.
+
+Describe your solution to the challenge statement.
+
+Develop a project vision using the Geoffry Moore Template in Chapter 1 of the textbook. 
+
+Develop a risk management plan using the risk management process.
