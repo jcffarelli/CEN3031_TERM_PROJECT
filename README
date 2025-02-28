@@ -24,9 +24,11 @@ Before you begin, ensure you have the following installed on your machine:
 
 Clone the repository to your local machine:
 
-```bash
+```
+bash
 git clone <your-repository-url>
 cd <your-repository-folder>
+```
 
 ---
 
@@ -34,8 +36,10 @@ cd <your-repository-folder>
 
 Run the following command to build the Docker containers. This will download all necessary images and set up your environment with the required dependencies (~5-10 min):
 
-```bash
+```
+bash
 docker-compose build
+```
 
 ---
 
@@ -43,8 +47,10 @@ docker-compose build
 
 Once the build is complete, start the application with:
 
-```bash
+```
+bash
 docker-compose up
+```
 
 This will:
 
@@ -73,8 +79,10 @@ You can now start developing the application. Any changes made to the code in th
 
 To stop the application, run:
 
-```bash
+```
+bash
 ctrl+C
 docker-compose down
+```
 
 This stops the containers and removes them, but preserves your data in the database.
