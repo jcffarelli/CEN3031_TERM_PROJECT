@@ -1,6 +1,6 @@
 import { fetchWeatherApi } from 'openmeteo';
 import generateGlobalGrid from './points';
-import { geoToPixel, createCoordinateConverter } from './projection'
+import { geoToPixel, createCoordinateConverter, updateScaleBar } from './projection'
 
 const CACHE_KEY = 'weatherDataCache';
 const CACHE_EXPIRY = 24 * 60 * 60 * 1000;
@@ -15,6 +15,10 @@ interface WeatherData {
 		latitude: number;
 		longitude: number;
 		timezoneAbbreviation: string | null;
+	};
+	computed: {
+		opacity: string;
+		borderColor: string;
 	};
 }
 
@@ -31,17 +35,16 @@ window.addEventListener('resize', function() {
 	
 	clearTimeout(window.resizeTimer);
 	window.resizeTimer = setTimeout(function() {
-		window.location.reload();
+		processCachedData();
 	}, 200);
 });
 
 document.addEventListener('DOMContentLoaded', function() {
-	const { latitudes, longitudes } = generateGlobalGrid(1000);
-	
 	const useCache = isDevMode() && hasCachedData();
 	if (useCache) {
 		processCachedData();
 	} else {
+		const { latitudes, longitudes } = generateGlobalGrid(4000);
 		globalWeatherDataCollection = [];
 		processBatches(latitudes, longitudes, 100);
 	}
@@ -74,29 +77,27 @@ function processCachedData() {
 		if (!cachedData) return;
 		
 		const { data } = JSON.parse(cachedData);
-		data.forEach(weatherData => {
-			const { location, current } = weatherData;
+		
+		const loadingText = document.querySelector('.loading-text');
+		if (!loadingText) return;
+		
+		data.forEach((weatherData, index) => {
+			const { location, current, computed } = weatherData;
 			const arrow = newArrow(location.latitude, location.longitude);
 			if (arrow) {
 				arrow.dataset.direction = current.windDirection10m.toString();
 				arrow.style.setProperty('--direction', `${current.windDirection10m}deg`);
 				arrow.style.transform = `rotate(${current.windDirection10m}deg)`;
-				const opacity = (current.windSpeed10m / 50);
-				arrow.style.opacity = opacity.toString();
-
-				if (current.temperature2m >= 15) {
-					const tempScaler = (current.temperature2m - 15) / 15;
-					const redValue = 255;
-					const greenBlueValue = 255 - (tempScaler * 255);
-					arrow.style.borderColor = `rgb(${redValue}, ${greenBlueValue}, ${greenBlueValue})`;
-				} else if (current.temperature2m < 15) {
-					const tempScaler = (current.temperature2m - 15) / -15;
-					const blueValue = 255;
-					const redGreenValue = 255 - (tempScaler * 255);
-					arrow.style.borderColor = `rgb(${redGreenValue}, ${redGreenValue}, ${blueValue})`;
-				}
+				arrow.style.opacity = computed.opacity;
+				arrow.style.borderColor = computed.borderColor;
 			}
+			
+			// Update loading text
+			loadingText.textContent = `Loading ${index + 1} out of ${data.length} points`;
 		});
+		
+		// Clear the text instead of removing the element
+		loadingText.textContent = '';
 	
 	} catch (e) {
 		console.error("Error processing cached data:", e);
@@ -116,8 +117,10 @@ async function processBatches(latitudes: Float32Array, longitudes: Float32Array,
 		
 		await fetchWeatherData(batchLatitudes, batchLongitudes);
 		
+		updateScaleBar();
+		
 		if (batch < batches - 1) {
-			await new Promise(resolve => setTimeout(resolve, 12000));
+			await new Promise(resolve => setTimeout(resolve, 10000));
 		}
 	}
 	
@@ -162,6 +165,10 @@ async function fetchWeatherData(latitude: Float32Array, longitude: Float32Array)
 				latitude,
 				longitude,
 				timezoneAbbreviation
+			},
+			computed: {
+				opacity: (windSpeed10m / 15).toString(),
+				borderColor: computeBorderColor(temperature2m)
 			}
 		};
 		
@@ -173,18 +180,8 @@ async function fetchWeatherData(latitude: Float32Array, longitude: Float32Array)
 			arrow.dataset.direction = windDirection10m.toString();
 			arrow.style.setProperty('--direction', `${windDirection10m}deg`);
 			arrow.style.transform = `rotate(${windDirection10m}deg)`;
-			const opacity = (windSpeed10m / 100);
-			arrow.style.opacity = opacity.toString();
-			const tempScaler = (temperature2m + 50) / 100;
-			if (temperature2m >= 15) {
-				const redValue = 255;
-				const greenBlueValue = 255 - (tempScaler * 255);
-				arrow.style.borderColor = `rgb(${redValue}, ${greenBlueValue}, ${greenBlueValue})`;
-			} else if (temperature2m < 15) {
-				const blueValue = 255;
-				const redGreenValue = 255 - (tempScaler * 255);
-				arrow.style.borderColor = `rgb(${redGreenValue}, ${redGreenValue}, ${blueValue})`;
-			}
+			arrow.style.opacity = weatherData.computed.opacity;
+			arrow.style.borderColor = weatherData.computed.borderColor;
 		}
 	}
 }
@@ -221,5 +218,20 @@ function clearWeatherCache() {
 	} catch (e) {
 		console.error("Error clearing weather data cache:", e);
 		return false;
+	}
+}
+
+// Helper function for computing border color
+function computeBorderColor(temperature2m: number): string {
+	if (temperature2m >= 15) {
+		const tempScaler = (temperature2m - 15) / 15;
+		const redValue = 255;
+		const greenBlueValue = 255 - (tempScaler * 255);
+		return `rgb(${redValue}, ${greenBlueValue}, ${greenBlueValue})`;
+	} else {
+		const tempScaler = (temperature2m - 15) / -15;
+		const blueValue = 255;
+		const redGreenValue = 255 - (tempScaler * 255);
+		return `rgb(${redGreenValue}, ${redGreenValue}, ${blueValue})`;
 	}
 }

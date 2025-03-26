@@ -7,13 +7,18 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://d3js.org/d3-geo-projection.v4.min.js"></script>
-    <script src="./js/8-bit.js"></script>
 </head>
 <body>
     <div class="map-container">
         <img id="world-map" src="./assets/world.svg" alt="world map">
         <div class="wind-arrow"></div>
+        <div class="loading-text"></div>
+        <div class="scale-container">
+            <div class="scale-bar"></div>
+            <div class="scale-text"></div>
+        </div>
     </div>
-    <script type="module" src="./js/data.ts"></script>
+    <script src="./js/8-bit.js"></script>
+    <script type="module" src="./js/data.ts" defer></script>
 </body>
 </html> 

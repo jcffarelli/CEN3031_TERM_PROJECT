@@ -2,9 +2,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const img = document.getElementById('world-map');
     
     img.onload = function() {
+        // Check if we have a cached version
+        const cachedImage = localStorage.getItem('pixelatedWorldMap');
+        if (cachedImage) {
+            replaceWithPixelatedImage(cachedImage);
+            return;
+        }
+
+        // If no cached version, process the image
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        
         const pixelSize = 7;
         
         canvas.width = img.naturalWidth;
@@ -55,24 +62,38 @@ document.addEventListener('DOMContentLoaded', function() {
         
         ctx.putImageData(pixelatedImageData, 0, 0);
         
+        // Cache the processed image
+        const dataUrl = canvas.toDataURL();
+        localStorage.setItem('pixelatedWorldMap', dataUrl);
+        
+        // Replace the image
+        replaceWithPixelatedImage(dataUrl);
+    };
+    
+    // Helper function to replace the original image
+    function replaceWithPixelatedImage(dataUrl) {
         const pixelatedImage = new Image();
-        pixelatedImage.src = canvas.toDataURL();
+        pixelatedImage.src = dataUrl;
         pixelatedImage.id = 'world-map';
         pixelatedImage.alt = '8-bit world map';
         pixelatedImage.classList.add('pixelated');
         
         img.parentNode.replaceChild(pixelatedImage, img);
         
-        const style = document.createElement('style');
-        style.textContent = `
-            .pixelated {
-                image-rendering: pixelated;
-                image-rendering: -moz-crisp-edges;
-                image-rendering: crisp-edges;
-            }
-        `;
-        document.head.appendChild(style);
-    };
+        // Add pixelated styling if not already present
+        if (!document.querySelector('style.pixelated-style')) {
+            const style = document.createElement('style');
+            style.className = 'pixelated-style';
+            style.textContent = `
+                .pixelated {
+                    image-rendering: pixelated;
+                    image-rendering: -moz-crisp-edges;
+                    image-rendering: crisp-edges;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+    }
     
     if (img.complete) {
         img.onload();
