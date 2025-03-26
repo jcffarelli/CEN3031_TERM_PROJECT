@@ -5,6 +5,9 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - ./src/app/src
+    command: npm run start
     depends_on:
       - db
 

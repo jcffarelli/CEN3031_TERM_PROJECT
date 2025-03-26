@@ -1,0 +1,25 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #4B92DB;
+}
+
+.map-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.wind-arrow {
+    position: absolute;
+    border: solid;
+    opacity: 0;
+    border-width: 0 3px 3px 0;
+    padding: 3px;
+}
+
+#world-map {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
