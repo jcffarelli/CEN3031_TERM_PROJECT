@@ -1,3 +1,11 @@
+nav {
+    border-bottom: 1px solid black;
+}
+
+footer {
+    border-top: 1px solid black;
+}
+
 section.account-field {
     width: 15%;
     min-width: 200px;
