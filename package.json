@@ -2,10 +2,14 @@
     "name": "webapp",
     "version": "1.0.0",
     "main": "index.js",
+    "type": "module",
     "scripts": {
         "start": "node ./src/server/server.js"
     },
     "dependencies": {
+        "@aws-sdk/client-dynamodb": "^3.772.0",
+        "@aws-sdk/lib-dynamodb": "^3.772.0",
+        "dotenv": "^16.4.7",
         "express": "^4.17.1",
         "mysql2": "^2.3.3"
     },
