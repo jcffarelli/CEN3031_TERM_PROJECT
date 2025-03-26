@@ -1,0 +1,16 @@
+section.create-account {
+    width: 15%;
+    min-width: 200px;
+
+    margin: auto;
+
+    outline: cornflowerblue;
+    outline-style: solid;
+    outline-width: 50px;
+
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 1%;
+
+
+}
