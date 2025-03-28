@@ -1,17 +1,17 @@
 // imports
+import express from "express";
 import dotenv from "dotenv";
-import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
 import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
+
 
 dotenv.config();
 
-// initialize client
 const client = new DynamoDBClient({region: "us-east-2"});
 const dynamodb = DynamoDBDocumentClient.from(client);
 
 const TABLE_NAME = "Users";
 
-import { GetItemCommand } from "@aws-sdk/client-dynamodb";
 
 // gets row info from username
 async function getItem(key){
@@ -29,7 +29,7 @@ async function getItem(key){
     }
 }
 
-export async function getOrganizationVal(key){
+async function getOrganizationVal(key){
     try{
         const item = await getItem(key);
         return item.Organization.BOOL;
@@ -39,7 +39,7 @@ export async function getOrganizationVal(key){
     }
 }
 
-export async function getAge(key){
+async function getAge(key){
     try{
         const item = await getItem(key);
         return item.Age.N;
@@ -49,13 +49,10 @@ export async function getAge(key){
     }
 }
 
-import { PutItemCommand } from "@aws-sdk/client-dynamodb";
-
 export async function inputUserInfo(username, password){
     try{
         // checking for existing user
-        const existingUser = await getItem({username: {username}});
-        console.log(existingUser);
+        const existingUser = await getItem({username: {S: username}});
         if (existingUser){
             console.log("Username already exists");
             return -1;
@@ -71,8 +68,6 @@ export async function inputUserInfo(username, password){
 
         const command = new PutItemCommand(params);
         const response = await dynamodb.send(command);
-        
-        console.log(response.$metadata.httpStatusCode);
 
         return 0;
     }
@@ -80,14 +75,4 @@ export async function inputUserInfo(username, password){
         console.error("Error: ", error);
     }
 }
-
-inputUserInfo("Test_User", "Test_Pass")
-    .then(result => {
-        if (result == 0){
-            console.log("User submitted");
-        }
-        else if(result == -1){
-            console.log("User already exists");
-        }
-    })
 

@@ -13,7 +13,7 @@ async function create(username, password) {
 	
 	// Check whether the username exists
 	const userExistQuery = "SELECT * FROM USERS WHERE USERNAME = ?";
-	const search_query = mysql.format(, [USERNAME]);
+	const search_query = mysql.format([USERNAME]);
 
 	const insert_query = "INSERT INTO (USERNAME, PASSWORD) VALUES (?, ?)";
 	const result = await db.pool.query(insert_query, [USERNAME, PASSWORD]);

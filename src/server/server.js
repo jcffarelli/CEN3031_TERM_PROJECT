@@ -1,49 +1,41 @@
-import express from "express"
+//imports
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
+
+// define path/directory
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+
 const app = express();
-// const AWS = require('aws-sdk')
-// const DynamoDB = new AWS.DynamoDB();
 const port = 3000;
+
+import * as db from "./database.js"
 
 
 app.use(express.urlencoded({extended: false}));
 
-
-// connect to the database ?
-/*
-const db = mariadb.createPool({
-	host: '127.0.0.1',
-	user: 'user1',
-	password: 'password1',
-	connectionLimit: 5
-});
-
-db.getConnection( (err, connection) => {
-	console.log ("Successful connection to database: " + connection.threadId)
-})
-
-*/
-
 app.get('/', (req, res) => {
-  res.sendFile('registration.html', { root: __dirname } );
+  res.sendFile('registration.html', { root: dirname } );
 });
-
-
-// Not necessary ?
-/*
-app.get('/register', (req, res) => {
-  res.sendFile('registration.html', { root: __dirname } );
-});
-*/
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
 
-app.post('/register', (req, res) => {
+
+app.post('/register', async (req, res) => {
+	// gets info from html
 	const { username, password } = req.body;
-	console.log(username);
-	console.log(password);
-	res.send('Working?');
-	// not finished 
-	// create(username, password);
+	const result = await db.inputUserInfo(username, password);
+
+	if(result == 0){
+		res.send("Sucess");
+	}
+	else if(result == -1){
+		res.send("Already Exists")
+	}
+	else{
+		res.send("Error!");
+	}
 });
