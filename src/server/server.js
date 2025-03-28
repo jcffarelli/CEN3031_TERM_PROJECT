@@ -1,8 +1,9 @@
-const express = require('express');
+import express from "express"
 const app = express();
 // const AWS = require('aws-sdk')
 // const DynamoDB = new AWS.DynamoDB();
 const port = 3000;
+
 
 app.use(express.urlencoded({extended: false}));
 
