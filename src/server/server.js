@@ -16,7 +16,7 @@ import * as db from "./database.js"
 app.use(express.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
-  res.sendFile('registration.html', { root: dirname } );
+  res.sendFile('home.html', { root: dirname } );
 });
 
 app.listen(port, () => {

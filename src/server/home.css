@@ -1,0 +1,22 @@
+nav {
+    border-bottom: 1px solid black;
+}
+
+footer {
+    border-top: 1px solid black;
+}
+
+section.account-field {
+    width: 25%;
+    min-width: 300px;
+
+    margin: auto;
+
+    outline: cornflowerblue;
+    outline-style: solid;
+    outline-width: 50px;
+
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 1%;
+}
