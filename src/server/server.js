@@ -19,6 +19,10 @@ app.get('/', (req, res) => {
   res.sendFile('home.html', { root: dirname } );
 });
 
+app.get('/registration.html', (req, res) => {
+	res.sendFile('registration.html', { root: dirname } );
+});
+
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
