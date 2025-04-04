@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
   res.sendFile('public/html/home.html', { root: dirname } );
 });
 
-app.get('/registration.html', (req, res) => {
+app.get('/registration', (req, res) => {
 	res.sendFile('public/html/registration.html', { root: dirname } );
 });
 
