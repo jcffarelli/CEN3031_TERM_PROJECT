@@ -18,11 +18,11 @@ app.use(express.static(dirname + '/public'));
 app.use(express.urlencoded({extended: false}));
 
 app.get('/', (req, res) => {
-  res.sendFile('home.html', { root: dirname } );
+  res.sendFile('public/html/home.html', { root: dirname } );
 });
 
 app.get('/registration.html', (req, res) => {
-	res.sendFile('registration.html', { root: dirname } );
+	res.sendFile('public/html/registration.html', { root: dirname } );
 });
 
 app.listen(port, () => {
