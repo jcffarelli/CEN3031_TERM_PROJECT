@@ -12,6 +12,8 @@ const port = 3000;
 
 import * as db from "./database.js"
 
+// Uses public directory to serve files to client
+app.use(express.static(dirname + '/public'));
 
 app.use(express.urlencoded({extended: false}));
 
