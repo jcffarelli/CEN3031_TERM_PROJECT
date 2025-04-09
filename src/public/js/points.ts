@@ -21,4 +21,4 @@ function generateGlobalGrid(numPoints: number) {
     return { latitudes, longitudes };
 }
 
-export { generateGlobalGrid };
+export default generateGlobalGrid;
