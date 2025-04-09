@@ -1,6 +1,6 @@
 import { fetchWeatherApi } from 'openmeteo';
-import generateGlobalGrid from './points';
-import { geoToPixel, createCoordinateConverter, updateScaleBar } from './projection'
+import * as points from './points';
+import * as projection from './projection';			
 
 const CACHE_KEY = 'weatherDataCache';
 const CACHE_EXPIRY = 24 * 60 * 60 * 1000;
@@ -36,7 +36,7 @@ window.addEventListener('resize', function() {
 	clearTimeout(window.resizeTimer);
 	window.resizeTimer = setTimeout(function() {
 		processCachedData();
-	}, 200);
+	}, 500);
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	if (useCache) {
 		processCachedData();
 	} else {
-		const { latitudes, longitudes } = generateGlobalGrid(4000);
+		const { latitudes, longitudes } = points.generateGlobalGrid(4000);
 		globalWeatherDataCollection = [];
 		processBatches(latitudes, longitudes, 100);
 	}
@@ -82,6 +82,7 @@ function processCachedData() {
 		if (!loadingText) return;
 		
 		data.forEach((weatherData, index) => {
+			
 			const { location, current, computed } = weatherData;
 			const arrow = newArrow(location.latitude, location.longitude);
 			if (arrow) {
@@ -94,6 +95,7 @@ function processCachedData() {
 			
 			// Update loading text
 			loadingText.textContent = `Loading ${index + 1} out of ${data.length} points`;
+
 		});
 		
 		// Clear the text instead of removing the element
@@ -117,7 +119,7 @@ async function processBatches(latitudes: Float32Array, longitudes: Float32Array,
 		
 		await fetchWeatherData(batchLatitudes, batchLongitudes);
 		
-		updateScaleBar();
+		projection.updateScaleBar();
 		
 		if (batch < batches - 1) {
 			await new Promise(resolve => setTimeout(resolve, 10000));
@@ -199,7 +201,7 @@ function newArrow(latitude: number, longitude: number) {
 	if (!worldMap) return;
 	
 	const mapRect = worldMap.getBoundingClientRect();
-	const converter = createCoordinateConverter(mapRect.width, mapRect.height);
+	const converter = projection.createCoordinateConverter(mapRect.width, mapRect.height);
 	const pixelPos = converter.geoToPixel(latitude, longitude);
 	
 	arrow.style.left = `${pixelPos.x}px`;
@@ -221,7 +223,6 @@ function clearWeatherCache() {
 	}
 }
 
-// Helper function for computing border color
 function computeBorderColor(temperature2m: number): string {
 	if (temperature2m >= 15) {
 		const tempScaler = (temperature2m - 15) / 15;
