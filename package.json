@@ -1,14 +1,46 @@
 {
     "name": "webapp",
     "version": "1.0.0",
-    "main": "index.js",
     "scripts": {
-        "start": "node src/server/server.js"
+        "start": "parcel build src/public/index.html --dist-dir ./src/public/dist && node ./src/server/server.js",
+        "dev": "parcel src/public/index.html",
+        "build": "parcel build src/public/index.html --dist-dir ./src/public/dist"
     },
     "dependencies": {
-        "express": "^4.17.1",
-        "mysql2": "^2.3.3"
+        "@types/d3": "^7.4.3",
+        "@types/matter-js": "^0.19.8",
+        "axios": "^1.8.4",
+        "cors": "^2.8.5",
+        "d3": "^7.9.0",
+        "d3-geo-projection": "^4.0.0",
+        "express": "^4.21.2",
+        "leaflet": "^1.9.4",
+        "matter-js": "^0.20.0",
+        "mysql2": "^2.3.3",
+        "openmeteo": "^1.2.0",
+        "path": "^0.12.7",
+        "proj4": "^2.15.0",
+        "proj4leaflet": "^1.0.2",
+        "shpjs": "^6.1.0"
     },
-    "devDependencies": {},
-    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+    "devDependencies": {
+        "parcel": "^2.14.2",
+        "svgo": "^3.3.2",
+        "ts-node": "^10.9.2",
+        "tsx": "^4.19.3",
+        "typescript": "^5.8.2"
+    },
+    "description": "This repository requires Docker to set up the environment. Follow the instructions below to get started.",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jcffarelli/CEN3031_TERM_PROJECT.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/jcffarelli/CEN3031_TERM_PROJECT/issues"
+    },
+    "homepage": "https://github.com/jcffarelli/CEN3031_TERM_PROJECT#readme"
 }
