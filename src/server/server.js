@@ -1,26 +1,45 @@
-const express = require('express')
-const app = express()
-const port = 3000
-const path = require('path')
-const cors = require('cors')
+//imports
+import express from "express";
+import path from "path";
+import { fileURLToPath } from "url";
 
-app.use(cors())
+// define path/directory
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
 
-// Serve Parcel-built files from the dist directory
-app.use(express.static(path.join(__dirname, '../public/dist')))
+const app = express();
+const port = 3000;
 
-// Serve other static assets (for development)
-app.use('/assets', express.static(path.join(__dirname, '../public/assets')))
+import * as db from "./database.js"
 
-// For non-dist static files
-app.use(express.static(path.join(__dirname, '../public')))
 
-// Catch-all route to serve the main HTML file
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/dist/index.html'))
-})
+app.use(express.urlencoded({extended: false}));
+
+app.get('/', (req, res) => {
+  res.sendFile('home.html', { root: dirname } );
+});
+
+app.get('/registration.html', (req, res) => {
+	res.sendFile('registration', { root: dirname } );
+});
 
 app.listen(port, () => {
-  console.log(`Server listening on port ${port}`)
-  console.log(`Visit http://localhost:${port} to view your app`)
-})
+  console.log(`App listening at http://localhost:${port}`);
+});
+
+
+app.post('/register', async (req, res) => {
+	// gets info from html
+	const { username, password } = req.body;
+	const result = await db.inputUserInfo(username, password);
+
+	if(result == 0){
+		res.send("Sucess");
+	}
+	else if(result == -1){
+		res.send("Already Exists")
+	}
+	else{
+		res.send("Error!");
+	}
+});
