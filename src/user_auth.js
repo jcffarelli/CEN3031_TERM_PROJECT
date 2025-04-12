@@ -1,4 +1,4 @@
-// not finished
+// good for mysql but outdated for dynamo not finished
 
 async function create(username, password) {
 	// const { username, password } = req.body;

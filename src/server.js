@@ -1,26 +1,16 @@
 //imports
-import express from "express";
-import path from "path";
-import { fileURLToPath } from "url";
-
-// define path/directory
-const filename = fileURLToPath(import.meta.url);
-const dirname = path.dirname(filename);
+const express = require('express')
+const path = require('path')
 
 const app = express();
 const port = 3000;
 
-import * as db from "./database.js"
+// for static files from public folder
+app.use(express.static(path.join(__dirname, '../public')))
 
-
-app.use(express.urlencoded({extended: false}));
 
 app.get('/home', (req, res) => {
-  res.sendFile('home.html', { root: dirname });
-});
-
-app.get('/registration', (req, res) => {
-	res.sendFile('registration.html', { root: dirname } );
+  res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 
 app.listen(port, () => {
