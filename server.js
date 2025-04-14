@@ -12,6 +12,10 @@ app.get('/home', (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
+app.get('/map', (req, res) => {
+	res.sendFile(path.join(__dirname, "public/map/index.html"));
+});
+
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}/home`);
 });
