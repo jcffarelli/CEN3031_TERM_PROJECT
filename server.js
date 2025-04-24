@@ -43,7 +43,11 @@ app.listen(port, () => {
 app.post('/register', async (req, res) => {
 	// gets info from html
 	const { username, password, zip} = req.body;
+
+	if (username == null) username = "";
+	if (password == null) password = "";
 	if (zip == null) zip = "00000";
+
 	const result = await db.inputUserInfo(username, password, zip);
 
 	if (result == 0){
