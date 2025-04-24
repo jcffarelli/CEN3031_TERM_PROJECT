@@ -37,10 +37,6 @@ app.get('/map', (req, res) => {
 	res.sendFile(path.join(__dirname, "public/map/dist/index.html"));
 });
 
-app.get('/signup', (req, res) => {
-	res.sendFile(path.join(__dirname, "public/signup.html"));
-});
-
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}/home`);
 });
