@@ -6,6 +6,7 @@ const app = express();
 const port = 3000;
 
 // for static files from public folder
+app.use(express.json())
 app.use(express.static(path.join(__dirname, '/public')))
 
 app.get('/home', (req, res) => {
@@ -23,8 +24,9 @@ app.listen(port, () => {
 
 app.post('/register', async (req, res) => {
 	// gets info from html
-	const { username, password, zipCode } = req.body;
+	const { username, password, zipCode} = req.body;
 	const result = await db.inputUserInfo(username, password, zipCode);
+	console.log(username);
 
 	if(result == 0) {
 		res.send("Sucess");
