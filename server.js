@@ -6,11 +6,11 @@ const app = express();
 const port = 3000;
 const cookieParser = require('cookie-parser');
 
-app.use(express.json())
-app.use(express.static(path.join(__dirname, '/public')))
+app.use('/map', express.static(path.join(__dirname, 'public/map/dist'))); 
+app.use(express.static(path.join(__dirname, '/public'))); 
+app.use(cookieParser()); 
+app.use(express.json()) 
 app.use(express.urlencoded({ extended: false }));
-app.use('/map', express.static(path.join(__dirname, 'public/map/dist')));
-app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '/public')));
 
