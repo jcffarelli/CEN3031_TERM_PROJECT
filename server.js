@@ -30,9 +30,6 @@ app.listen(port, () => {
 app.post('/register', async (req, res) => {
 	// gets info from html
 	const { username, password, zip} = req.body;
-	console.log(username);
-	console.log(password);
-	console.log(zip);
 	const result = await db.inputUserInfo(username, password, zip);
 
 	if (result == 0) {
@@ -45,3 +42,20 @@ app.post('/register', async (req, res) => {
 		res.send("Error!");
 	}
 });
+
+app.post('/login', async (req, res) => {
+	// gets info from html
+	const { username, password} = req.body;
+	zip = 12345;
+
+	const result = await db.inputUserInfo(username, password, zip);
+
+	if (result == -1) {
+		res.send("User does exists")
+	}
+
+	else {
+		res.send("User does not exist");
+	}
+});
+
