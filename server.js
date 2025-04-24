@@ -12,8 +12,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use('/map', express.static(path.join(__dirname, 'public/map/dist')));
 app.use(cookieParser());
 
-app.use(express.static(path.join(__dirname, '/public')));
-
 app.get('/home', (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
@@ -48,11 +46,12 @@ app.post('/register', async (req, res) => {
 	if (zip == null) zip = "00000";
 	const result = await db.inputUserInfo(username, password, zip);
 
-	if(result == 0){
+	if (result == 0){
 		res.send("Success");
+		// also probably crushes the program (see below)
 		// res.cookie('username', username);
 	}
-	else if(result == -1){
+	else if (result == -1) {
 		res.send("Already Exists")
 	}
 	else{
@@ -63,16 +62,20 @@ app.post('/register', async (req, res) => {
 app.post('/login', async (req, res) => {
 	// gets info from html
 	const { username, password} = req.body;
-	zip = 12345;
 
-	const result = await db.inputUserInfo(username, password, zip);
+	if (username == null) username = "";
+	if (password == null) password = "";
 
-	if (result == -1) {
+	const result = await db.confirmLogin(username, password);
+
+	if (result == true) {
 		res.send("User does exists")
+		// crashes the server
+		//res.cookie('username', username);
 	}
 
 	else {
-		res.send("User does not exist");
+		res.sendFile(path.join(__dirname, "public/login.html"));
 	}
 });
 
