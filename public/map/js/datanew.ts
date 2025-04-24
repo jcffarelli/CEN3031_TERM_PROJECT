@@ -53,7 +53,6 @@ export let globalWeatherDataCollection: WeatherData[] = [];
 let canvas: HTMLCanvasElement | null = null;
 let ctx: CanvasRenderingContext2D | null = null;
 export let weatherDataTree: KDTree | null = null;
-let coordinateConverter: ReturnType<typeof projection.createCoordinateConverter> | null = null;
 
 declare global {
     interface Window {
@@ -65,7 +64,6 @@ window.addEventListener('resize', function() {
     clearTimeout(window.resizeTimer);
     window.resizeTimer = setTimeout(function() {
         redrawAllArrows();
-        setupTooltip();
     }, 200);
 });
 
@@ -119,14 +117,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         if (mapElement) {
             mapElement.innerHTML = `<p style="color: red; text-align: center; margin-top: 50px;">Error: Could not load essential weather data.</p>`;
         }
-        return; // Stop execution if data loading failed
     }
-
-    // Store the converter for use in event listeners
-    coordinateConverter = projection.createCoordinateConverter(canvas.width, canvas.height);
-
-    // Setup tooltip interaction
-    setupTooltip();
 });
 
 function drawArrowOnCanvas(
@@ -265,76 +256,4 @@ function animateWindParticles() {
 function startWindAnimation() {
     lastDataUpdateTime = Date.now();
     animateWindParticles();
-}
-
-// --- Tooltip Logic ---
-
-function setupTooltip() {
-    const mapElement = document.getElementById('world-map');
-    const tooltipElement = document.getElementById('tooltip');
-
-    if (!mapElement || !tooltipElement || !coordinateConverter) {
-        console.error("Map, tooltip, or coordinate converter not available for tooltip setup.");
-        return;
-    }
-
-    mapElement.addEventListener('mousemove', (event) => {
-        if (!weatherDataTree) return; // Don't do anything if tree isn't ready
-
-        const rect = (event.target as Element).getBoundingClientRect();
-        const mouseX = event.clientX - rect.left;
-        const mouseY = event.clientY - rect.top;
-
-        // Convert pixel to geo
-        const geoCoords = coordinateConverter!.pixelToGeo(mouseX, mouseY);
-
-        if (!geoCoords) { // Mouse might be off the projected map
-            tooltipElement.style.display = 'none';
-            return;
-        }
-
-        const { latitude, longitude } = geoCoords;
-
-        // Convert geo to x, y, z for KDTree query
-        const latRad = latitude * Math.PI / 180;
-        const lonRad = longitude * Math.PI / 180;
-        const R = 1;
-        const queryPoint = {
-            x: R * Math.cos(latRad) * Math.cos(lonRad),
-            y: R * Math.cos(latRad) * Math.sin(lonRad),
-            z: R * Math.sin(latRad),
-            // Add dummy location/current if needed by distance function, 
-            // though the KDTree uses x,y,z primarily
-            location: { latitude, longitude }, 
-            current: { temperature2m: 0, windSpeed10m: 0, windDirection10m: 0 },
-            computed: { opacity: '0', color: ''} // Add dummy computed if necessary
-        };
-
-        // Find nearest weather data point using the KDTree
-        const nearestResult = weatherDataTree.nearest(queryPoint, 1);
-        if (nearestResult && nearestResult.length > 0) {
-            const [nearestData, distance] = nearestResult[0]; // nearestData is WeatherData
-            
-            // Format the data for the tooltip
-            const temp = nearestData.current.temperature2m.toFixed(1);
-            const wind = nearestData.current.windSpeed10m.toFixed(1);
-            tooltipElement.innerHTML = `Temp: ${temp}°C\nWind: ${wind} m/s`;
-
-            // Position tooltip near cursor
-            // Adjust offsetX/offsetY to prevent tooltip from covering the cursor
-            const offsetX = 15;
-            const offsetY = 10;
-            tooltipElement.style.left = `${event.pageX + offsetX}px`;
-            tooltipElement.style.top = `${event.pageY + offsetY}px`;
-            tooltipElement.style.display = 'block';
-        } else {
-            tooltipElement.style.display = 'none';
-        }
-    });
-
-    mapElement.addEventListener('mouseout', () => {
-        tooltipElement.style.display = 'none';
-    });
-
-    console.log("Tooltip interactions initialized.");
 }

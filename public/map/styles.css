@@ -74,3 +74,18 @@ body {
     pointer-events: none; /* Prevent particles from interfering with map interaction */
     box-shadow: 0 0 2px rgba(255, 255, 255, 0.5); /* Optional glow */
 }
+
+/* Tooltip styling */
+#tooltip {
+    position: absolute;
+    display: none; /* Hidden by default */
+    padding: 8px 12px;
+    color: black; /* Changed text color to black */
+    font-family: 'Press Start 2P'; /* Pixel font */
+    font-size: 12px;
+    white-space: pre; /* Preserve line breaks */
+    pointer-events: none; /* Don't interfere with map events */
+    z-index: 1001; /* Above other elements */
+    user-select: none;
+    line-height: 1.4;
+}

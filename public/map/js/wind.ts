@@ -70,8 +70,8 @@ function createWindParticles(count: number, windParticles: WindParticle[]) {
 				windDirection10m: 0,
 			},
 			computed: {
-				opacity: 0.8,
-				color: 'rgba(255, 255, 255, 0.8)',
+				opacity: 0.5,
+				color: 'rgba(255, 255, 255, 0.5)',
 				tail: []
 			}
 		});
