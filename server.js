@@ -18,6 +18,7 @@ app.get('/home', (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
+
 app.get('/login', (req, res) => {
 	var cookie = req.cookies.cookieName;
 	if (cookie == undefined) {
@@ -26,6 +27,10 @@ app.get('/login', (req, res) => {
 	else {
 		res.send("Already Logged In");
 	}
+});
+
+app.get('/signup', (req, res) => {
+	res.sendFile(path.join(__dirname, "public/signup.html"));
 });
 
 app.get('/map', (req, res) => {
