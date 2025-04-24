@@ -1,6 +1,6 @@
 # Web App Development Setup
   
-This repository requires Docker to set up the environment. Follow the instructions below to get started.
+This repository requires Yarn to set up the environment. Follow the instructions below to get started.
   
 ## Quick Links
   
@@ -10,12 +10,9 @@ This repository requires Docker to set up the environment. Follow the instructio
 ---
 ## Prerequisites
   
-Before you begin, ensure you have the following installed on your machine:
-  
-- **Docker**: [Installation Guide](https://docs.docker.com/get-docker/ )  
-- **Docker Compose**: [Installation Guide](https://docs.docker.com/compose/install/ )
-  
----
+Before you begin, ensure you have yarn installed on your machine:
+
+- **Yarn Install**: [Yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable)
   
 ## Getting Started
   
@@ -29,60 +26,5 @@ git clone <your-repository-url>
 cd <your-repository-folder>
 ```
   
----
   
-### 2. Build the Docker Containers
-  
-Run the following command to build the Docker containers. This will download all necessary images and set up your environment with the required dependencies (~5-10 min):
-  
-```
-bash
-docker-compose build
-```
-  
----
-  
-### 3. Start the Application
-  
-Once the build is complete, start the application with:
-  
-```
-bash
-docker-compose up
-```
-  
-This will:
-  
-- Start a container for the Node.js app.
-- Start a MySQL container.
-- Set up a containerized Python environment with all dependencies installed.
-  
-The application will be accessible at [http://localhost:3000](http://localhost:3000 ).
-  
----
-  
-### 4. Verify the Setup
-  
-- **Node.js Application**: Verify it’s running by visiting [http://localhost:3000](http://localhost:3000 ).  
-- **MySQL Database**: Connect to the database via a MySQL client at `localhost:3306`.
-  
----
-  
-### 5. Develop
-  
-You can now start developing the application. Any changes made to the code in the repository will be reflected in real-time in your containers.
-  
----
-  
-### 6. Stopping the Application
-  
-To stop the application, run:
-  
-```
-bash
-ctrl+C
-docker-compose down
-```
-  
-This stops the containers and removes them, but preserves your data in the database.
   
