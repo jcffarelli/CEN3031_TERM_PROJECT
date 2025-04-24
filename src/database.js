@@ -72,13 +72,6 @@ async function confirmLogin(username, password){
     }
 }
 
-(async () => {
-    const result = await confirmLogin("Test_User", "Test_Password");
-    console.log("Login Confirmation:", result);
-})();
-
-
-
 async function inputUserInfo(username, password, zip_code) {
     try {
         // checking for existing user
