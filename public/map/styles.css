@@ -10,12 +10,18 @@ body {
     position: relative;
 }
 
-.wind-arrow {
+#wind-canvas,
+#arrow-canvas {
     position: absolute;
-    border: solid;
-    opacity: 0;
-    border-width: 0 3px 3px 0;
-    padding: 3px;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* Allow map interaction */
+}
+
+#particle-canvas {
+    z-index: 1; /* Ensure particles are drawn above arrows */
 }
 
 #world-map {
@@ -33,12 +39,12 @@ body {
     flex-direction: column;
     align-items: center;
     font-family: system-ui;
+    z-index: 2;
 }
 
 .scale-bar {
     width: 64px;
-    height: 4px;
-    border-radius: 2px;
+    height: 6px;
     background-color: #000;
     margin-bottom: 4px;
 }
@@ -58,4 +64,13 @@ body {
     color: #000;
     font-family: system-ui;
     z-index: 1000;
+}
+.wind-particle {
+    width: 2px;
+    height: 2px;
+    background-color: rgba(255, 255, 255, 0.7); /* White with some transparency */
+    border-radius: 50%; /* Make it a dot */
+    position: absolute; /* Already set by JS, but good practice */
+    pointer-events: none; /* Prevent particles from interfering with map interaction */
+    box-shadow: 0 0 2px rgba(255, 255, 255, 0.5); /* Optional glow */
 }

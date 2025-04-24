@@ -34,6 +34,9 @@ app.post('/register', async (req, res) => {
 	console.log(username);
 	console.log(password);
 	console.log(zipCode);
+=======
+	const { username, password } = req.body;
+>>>>>>> 97ed7c25a66566526516df2dfa05002d8172d4f4
 	const result = await db.inputUserInfo(username, password, zipCode);
 
 	if (result == 0) {
