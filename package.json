@@ -1,7 +1,6 @@
 {
     "name": "webapp",
     "version": "1.0.0",
-    "main": "index.js",
     "type": "commonjs",
     "scripts": {
         "start": "parcel build public/map/index.html --dist-dir public/map/dist --public-url ./ && node server.js",
@@ -16,6 +15,7 @@
         "d3-geo-projection": "^4.0.0",
         "leaflet": "^1.9.4",
         "matter-js": "^0.20.0",
+        "kd-tree-javascript": "^1.0.3",
         "openmeteo": "^1.2.0",
         "path": "^0.12.7",
         "proj4": "^2.15.0",
