@@ -65,7 +65,7 @@ async function inputUserInfo(username, password, zipCode) {
             Item: {
                 username: { S: username },
                 password: { S: password },
-                zipCode: {N: zipCode}
+                zip_code: {N: zipCode.toString()}
             }
         };
 

@@ -30,7 +30,7 @@ app.listen(port, () => {
 app.post('/register', async (req, res) => {
 	// gets info from html
 	const { username, password} = req.body;
-	zipCode = 12345;
+	const zipCode = 12345;
 	console.log(username);
 	console.log(password);
 	console.log(zipCode);
