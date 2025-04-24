@@ -1,20 +1,24 @@
 // imports
-import express from "express";
-import dotenv from "dotenv";
-import { DynamoDBClient, GetItemCommand, PutItemCommand } from "@aws-sdk/client-dynamodb";
-import { DynamoDBDocumentClient } from "@aws-sdk/lib-dynamodb";
-
+const express = require("express");
+const dotenv = require("dotenv");
+const { DynamoDBClient, GetItemCommand, PutItemCommand } = require("@aws-sdk/client-dynamodb");
+const { DynamoDBDocumentClient } = require("@aws-sdk/lib-dynamodb");
 
 dotenv.config();
 
-const client = new DynamoDBClient({region: "us-east-2"});
+const client = new DynamoDBClient({
+    region: "us-east-2",
+    credentials: {
+        accessKeyId: "AKIAVII7O655KTAMQB6D",
+        secretAccessKey: "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"
+    }
+});
 const dynamodb = DynamoDBDocumentClient.from(client);
 
 const TABLE_NAME = "Users";
 
-
 // gets row info from username
-async function getItem(key){
+async function getItem(key) {
     try {
         const params = {
             TableName: TABLE_NAME,
@@ -23,37 +27,34 @@ async function getItem(key){
         const command = new GetItemCommand(params);
         const data = await dynamodb.send(command);
         return data.Item;
-    }
-    catch(error){
+    } catch (error) {
         console.error("Error:", error);
     }
 }
 
-async function getOrganizationVal(key){
-    try{
+async function getOrganizationVal(key) {
+    try {
         const item = await getItem(key);
         return item.Organization.BOOL;
-    }
-    catch(error){
+    } catch (error) {
         console.error("Error:", error);
     }
 }
 
-async function getAge(key){
-    try{
+async function getAge(key) {
+    try {
         const item = await getItem(key);
         return item.Age.N;
-    }
-    catch(error){
+    } catch (error) {
         console.error("Error:", error);
     }
 }
 
-export async function inputUserInfo(username, password){
-    try{
+async function inputUserInfo(username, password) {
+    try {
         // checking for existing user
-        const existingUser = await getItem({username: {S: username}});
-        if (existingUser){
+        const existingUser = await getItem({ username: { S: username } });
+        if (existingUser) {
             console.log("Username already exists");
             return -1;
         }
@@ -64,15 +65,21 @@ export async function inputUserInfo(username, password){
                 username: { S: username },
                 password: { S: password }
             }
-        }
+        };
 
         const command = new PutItemCommand(params);
         const response = await dynamodb.send(command);
 
         return 0;
-    }
-    catch(error){
+    } catch (error) {
         console.error("Error: ", error);
     }
 }
 
+// Export functions
+module.exports = {
+    getItem,
+    getOrganizationVal,
+    getAge,
+    inputUserInfo
+};
