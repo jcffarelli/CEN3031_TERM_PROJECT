@@ -3,28 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="css/signup.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
-    <section class="create-account">
-        <h1>Create an account</h1>
-        <div>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" />
-        </div>
+<body class="background">
+    <div class="grid">
+        <nav class="nav-foot">
+            <i class="fi fi-ss-home"></i>
+            <a href="map">Map</a>
+        </nav>
 
-        <div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" />
-        </div>
+        <section class="account-field">
+            <h1>Create an account</h1>
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" />
+            </div>
 
-        <div>
-            <label for="confirm-password">Confirm Password:</label>
-            <input type="password" id="confirm-password" name="confirm-password" />
-        </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" />
+            </div>
 
-        <input type="submit" value="Create account" />
-    </section>
+            <div>
+                <label for="confirm-password">Confirm Password:</label>
+                <input type="password" id="confirm-password" name="confirm-password" />
+            </div>
+
+            <input type="submit" value="Create account" />
+        </section>
+
+        <footer class="nav-foot">
+            <div>
+                Uicons by <a href="https://www.flaticon.com/uicons">Flaticon</a>
+            </div>
+        </footer>
+    </div>
 
 </body>
 </html>
