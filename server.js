@@ -4,12 +4,13 @@ const path = require('path')
 const db = require('./src/database.js')
 const app = express();
 const port = 3000;
+var cookieParser = require('cookie-parser');
 
 app.use(express.json())
 app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.urlencoded({ extended: false }));
 app.use('/map', express.static(path.join(__dirname, 'public/map/dist')));
-// app.use(express.cookieParser());
+app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, '/public')));
 
@@ -18,13 +19,13 @@ app.get('/home', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-	//var cookie = req.cookies.cookieName;
-	//if (cookie == undefined) {
+	var cookie = req.cookies.cookieName;
+	if (cookie == undefined) {
 		res.sendFile(path.join(__dirname, "public/login.html"));
-	//}
-	//else {
+	}
+	else {
 		//res.send("Already Logged In");
-	//}
+	}
 });
 
 app.get('/map', (req, res) => {
@@ -46,7 +47,7 @@ app.post('/register', async (req, res) => {
 	const result = await db.inputUserInfo(username, password, zip);
 
 	if(result == 0){
-		res.send("Sucess");
+		res.send("Success");
 	}
 	else if(result == -1){
 		res.send("Already Exists")
