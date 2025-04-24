@@ -33,15 +33,15 @@ app.get('/signup', (req, res) => {
 });
 
 app.get('/signup/error', (req, res) => {
-	res.sendFile(path.join(__dirname, "public/signuperror.html"));
+	res.sendFile(path.join(__dirname, "public/signup-error.html"));
 });
 
 app.get('/signup/already-exists', (req, res) => {
-	res.sendFile(path.join(__dirname, "public/signup.html"));
+	res.sendFile(path.join(__dirname, "public/signup-error.html"));
 });
 
 app.get('/signup/success', (req, res) => {
-	res.sendFile(path.join(__dirname, "public/signup.html"));
+	res.sendFile(path.join(__dirname, "public/signup-success.html"));
 });
 
 app.get('/map', (req, res) => {
