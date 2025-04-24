@@ -26,7 +26,7 @@ app.post('/register', async (req, res) => {
 	const { username, password } = req.body;
 	const result = await db.inputUserInfo(username, password);
 
-	if(result == 0){
+	if(result == 0) {
 		res.send("Sucess");
 	}
 	else if(result == -1){

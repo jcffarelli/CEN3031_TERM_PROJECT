@@ -1,0 +1,42 @@
+body.background {
+    margin:0; height: 100%;
+
+    background-size: 60px 60px;
+    background-image: linear-gradient(to right, grey 1px, transparent 1px), linear-gradient(to bottom, grey 1px, transparent 1px);
+}
+div.grid {
+    display:grid;
+    grid-template-rows: auto 1fr auto;
+    height:100vh;
+}
+
+.nav-foot {
+    background: #34476a;
+    border-top: 1px solid black;
+
+    div {
+        color: white;
+
+        a {
+            color: white;
+
+        }
+    }
+}
+
+section.account-field {
+    width: 20%;
+    min-width: 200px;
+
+    background: aliceblue;
+
+    margin: auto;
+
+    outline: cornflowerblue;
+    outline-style: solid;
+    outline-width: 50px;
+
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 1%;
+}
