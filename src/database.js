@@ -32,6 +32,24 @@ async function getItem(key) {
     }
 }
 
+async function getZip(username){
+    try {
+        // Retrieve the item from the database
+        const item = await getItem({ username: { S: username } });
+
+        // Check if the item exists and return the zipCode
+        if (item && item.zip_code) {
+            return item.zip_code.N; 
+        } else {
+            console.log("No zipCode found for the given username.");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error retrieving zipCode:", error);
+        throw error;
+    }
+}
+
 
 async function inputUserInfo(username, password, zipCode) {
     try {
@@ -47,7 +65,7 @@ async function inputUserInfo(username, password, zipCode) {
             Item: {
                 username: { S: username },
                 password: { S: password },
-                zipCode: {I: zipCode}
+                zipCode: {N: zipCode}
             }
         };
 
@@ -60,8 +78,14 @@ async function inputUserInfo(username, password, zipCode) {
     }
 }
 
+(async () => {
+    const zipCode = await getZip("Test_User");
+    console.log("Zip Code:", zipCode);
+})();
+
 // Export functions
 module.exports = {
     getItem,
-    inputUserInfo
+    inputUserInfo,
+    getZip
 };
