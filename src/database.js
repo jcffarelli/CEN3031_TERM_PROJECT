@@ -50,8 +50,10 @@ async function getZip(username){
     }
 }
 
+async 
 
-async function inputUserInfo(username, password, zipCode) {
+
+async function inputUserInfo(username, password, zip_code) {
     try {
         // checking for existing user
         const existingUser = await getItem({ username: { S: username } });
@@ -65,7 +67,7 @@ async function inputUserInfo(username, password, zipCode) {
             Item: {
                 username: { S: username },
                 password: { S: password },
-                zip_code: {N: zipCode.toString()}
+                zip_code: {N: zip_code.toString()}
             }
         };
 

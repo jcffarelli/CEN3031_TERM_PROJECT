@@ -2,47 +2,40 @@
 const express = require('express')
 const path = require('path')
 const db = require('./src/database.js')
-
 const app = express();
 const port = 3000;
 
-// for static files from public folder
 app.use(express.json())
 app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.urlencoded({ extended: false }));
+app.use('/map', express.static(path.join(__dirname, 'public/map/dist')));
+
+app.use(express.static(path.join(__dirname, '/public')));
 
 app.get('/home', (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
 app.get('/map', (req, res) => {
-	res.sendFile(path.join(__dirname, "public/map/index.html"));
-});
-
-app.get('/signup', (req, res) => {
-	res.sendFile(path.join(__dirname, "public/signup.html"));
+	res.sendFile(path.join(__dirname, "public/map/dist/index.html"));
 });
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}/home`);
 });
 
+
 app.post('/register', async (req, res) => {
 	// gets info from html
-	const { username, password} = req.body;
-	const zipCode = 12345;
-	console.log(username);
-	console.log(password);
-	console.log(zipCode);
-=======
-	const { username, password } = req.body;
->>>>>>> 97ed7c25a66566526516df2dfa05002d8172d4f4
-	const result = await db.inputUserInfo(username, password, zipCode);
+	const { username, password, zip } = req.body;
+	console.log(username, password, zip)
+	const result = await db.inputUserInfo(username, password, zip);
 
-	if (result == 0) {
+
+	if(result == 0){
 		res.send("Sucess");
 	}
-	else if (result == -1) {
+	else if(result == -1){
 		res.send("Already Exists")
 	}
 	else{
