@@ -9,6 +9,7 @@ app.use(express.json())
 app.use(express.static(path.join(__dirname, '/public')))
 app.use(express.urlencoded({ extended: false }));
 app.use('/map', express.static(path.join(__dirname, 'public/map/dist')));
+// app.use(express.cookieParser());
 
 app.use(express.static(path.join(__dirname, '/public')));
 
@@ -16,8 +17,22 @@ app.get('/home', (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
 
+app.get('/login', (req, res) => {
+	//var cookie = req.cookies.cookieName;
+	//if (cookie == undefined) {
+		res.sendFile(path.join(__dirname, "public/login.html"));
+	//}
+	//else {
+		//res.send("Already Logged In");
+	//}
+});
+
 app.get('/map', (req, res) => {
 	res.sendFile(path.join(__dirname, "public/map/dist/index.html"));
+});
+
+app.get('/signup', (req, res) => {
+	res.sendFile(path.join(__dirname, "public/signup.html"));
 });
 
 app.listen(port, () => {
