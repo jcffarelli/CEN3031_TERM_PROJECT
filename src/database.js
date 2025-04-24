@@ -50,7 +50,33 @@ async function getZip(username){
     }
 }
 
-async 
+async function confirmLogin(username, password){
+    try{
+        const item = await getItem({ username: { S: username } });
+        // check if username in system
+        if(!item){
+            console.log("Username not in database");
+            return false;
+        }
+        else if(item.password.S != password){
+            console.log("Password Does not match username");
+            return false;
+        }
+        else{
+            console.log("Sucess!")
+            return true;
+        }
+    }
+    catch{error}{
+        console.error("Error: ", error);
+    }
+}
+
+(async () => {
+    const result = await confirmLogin("Test_User", "Test_Password");
+    console.log("Login Confirmation:", result);
+})();
+
 
 
 async function inputUserInfo(username, password, zip_code) {
@@ -80,14 +106,11 @@ async function inputUserInfo(username, password, zip_code) {
     }
 }
 
-(async () => {
-    const zipCode = await getZip("Test_User");
-    console.log("Zip Code:", zipCode);
-})();
 
 // Export functions
 module.exports = {
     getItem,
     inputUserInfo,
-    getZip
+    getZip,
+    confirmLogin
 };
