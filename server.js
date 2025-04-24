@@ -12,12 +12,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(express.static(path.join(__dirname, '/public')));
-
 app.get('/home', (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
 });
-
 
 app.get('/login', (req, res) => {
 	var cookie = req.cookies.cookieName;
@@ -33,46 +30,65 @@ app.get('/signup', (req, res) => {
 	res.sendFile(path.join(__dirname, "public/signup.html"));
 });
 
+app.get('/signup/error', (req, res) => {
+	res.sendFile(path.join(__dirname, "public/signup-error.html"));
+});
+
+app.get('/signup/already-exists', (req, res) => {
+	res.sendFile(path.join(__dirname, "public/signup-error.html"));
+});
+
+app.get('/signup/success', (req, res) => {
+	res.sendFile(path.join(__dirname, "public/signup-success.html"));
+});
+
 app.get('/map', (req, res) => {
 	res.sendFile(path.join(__dirname, "public/map/dist/index.html"));
 });
-
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}/home`);
 });
 
-
 app.post('/register', async (req, res) => {
 	// gets info from html
 	const { username, password, zip} = req.body;
+
+	if (username == null) username = "";
+	if (password == null) password = "";
 	if (zip == null) zip = "00000";
+
 	const result = await db.inputUserInfo(username, password, zip);
 
-	if(result == 0){
-		res.send("Success");
+	if (result == 0){
+		res.redirect('/signup/success');
+		// also probably crushes the program (see below)
 		// res.cookie('username', username);
 	}
-	else if(result == -1){
-		res.send("Already Exists")
+	else if (result == -1) {
+		res.redirect('/signup/already-exists');
 	}
 	else{
-		res.send("Error!");
+		res.redirect('/signup/error');
 	}
 });
 
 app.post('/login', async (req, res) => {
 	// gets info from html
 	const { username, password} = req.body;
-	zip = 12345;
 
-	const result = await db.inputUserInfo(username, password, zip);
+	if (username == null) username = "";
+	if (password == null) password = "";
 
-	if (result == -1) {
+	const result = await db.confirmLogin(username, password);
+
+	if (result == true) {
 		res.send("User does exists")
+		// crashes the server
+		//res.cookie('username', username);
 	}
 
 	else {
-		res.send("User does not exist");
+		res.sendFile(path.join(__dirname, "public/login.html"));
 	}
 });
 
