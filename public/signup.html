@@ -13,29 +13,28 @@
         </nav>
 
         <section class="account-field">
-            <h1>Create an account</h1>
-            <div>
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" />
-            </div>
+	<form action="/register" method="POST">
+			<fieldset>
+		    <h1>Create an account</h1>
+		    <div>
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username" />
+		    </div>
 
-            <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" />
-            </div>
+		    <div>
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" />
+		    </div>
 
-            <div>
-                <label for="confirm-password">Confirm Password:</label>
-                <input type="password" id="confirm-password" name="confirm-password" />
-            </div>
-
-            <input type="submit" value="Create account" />
+		    <input type="submit" value="Create account" />
+			</fieldset>
+	</form>
         </section>
 
         <footer class="nav-foot">
-            <div>
-                Uicons by <a href="https://www.flaticon.com/uicons">Flaticon</a>
-            </div>
+		    <div>
+			Uicons by <a href="https://www.flaticon.com/uicons">Flaticon</a>
+		    </div>
         </footer>
     </div>
 
