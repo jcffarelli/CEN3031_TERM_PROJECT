@@ -32,25 +32,8 @@ async function getItem(key) {
     }
 }
 
-async function getOrganizationVal(key) {
-    try {
-        const item = await getItem(key);
-        return item.Organization.BOOL;
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
 
-async function getAge(key) {
-    try {
-        const item = await getItem(key);
-        return item.Age.N;
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
-
-async function inputUserInfo(username, password, zipCode = 12345) {
+async function inputUserInfo(username, password, zipCode) {
     try {
         // checking for existing user
         const existingUser = await getItem({ username: { S: username } });
@@ -80,7 +63,5 @@ async function inputUserInfo(username, password, zipCode = 12345) {
 // Export functions
 module.exports = {
     getItem,
-    getOrganizationVal,
-    getAge,
     inputUserInfo
 };
