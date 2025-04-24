@@ -23,8 +23,8 @@ app.listen(port, () => {
 
 app.post('/register', async (req, res) => {
 	// gets info from html
-	const { username, password } = req.body;
-	const result = await db.inputUserInfo(username, password);
+	const { username, password, zipCode } = req.body;
+	const result = await db.inputUserInfo(username, password, zipCode);
 
 	if(result == 0){
 		res.send("Sucess");

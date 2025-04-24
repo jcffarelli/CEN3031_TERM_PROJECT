@@ -50,7 +50,7 @@ async function getAge(key) {
     }
 }
 
-async function inputUserInfo(username, password) {
+async function inputUserInfo(username, password, zipCode = 12345) {
     try {
         // checking for existing user
         const existingUser = await getItem({ username: { S: username } });
@@ -63,7 +63,8 @@ async function inputUserInfo(username, password) {
             TableName: TABLE_NAME,
             Item: {
                 username: { S: username },
-                password: { S: password }
+                password: { S: password },
+                zipCode: {I: zipCode}
             }
         };
 
