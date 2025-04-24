@@ -51,7 +51,7 @@ export function initializeWindLayer() {
 		return;
 	}
 	
-	createWindParticles(50000, windParticles);
+	createWindParticles(10000, windParticles);
 	
 	console.log("Wind layer initialized with", windParticles.length, "particles");
 }
