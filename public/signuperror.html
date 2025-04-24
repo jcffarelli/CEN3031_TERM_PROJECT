@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="background">
+    <div class="grid">
+        <nav class="nav-foot">
+            <i class="fi fi-ss-home"></i>
+            <a href="map">Map</a>
+        </nav>
+
+        <section class="account-field">
+	<form action="/register" method="POST">
+			<fieldset>
+		    <h1>Create an account</h1>
+			<div class="box-error">
+				<p>Error! Registration is unsuccessful. Input fields may be invalid or an account may already exist with this username.</p>
+			</div>
+		    <div>
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username" />
+		    </div>
+
+		    <div>
+			<label for="password">Password:</label>
+			<input type="password" id="password" name="password" />
+		    </div>
+
+		    <div>
+			<label for="zip">Zip Code:</label>
+			<input type="number" id="zip" name="zip" />
+		    </div>
+
+		    <input type="submit" value="Create account" />
+			</fieldset>
+	</form>
+        </section>
+
+        <footer class="nav-foot">
+		    <div>
+			Uicons by <a href="https://www.flaticon.com/uicons">Flaticon</a>
+		    </div>
+        </footer>
+    </div>
+
+</body>
+</html>
